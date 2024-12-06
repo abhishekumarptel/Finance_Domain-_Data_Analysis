@@ -1,0 +1,6 @@
+"account_id","customer_id","account_type","balance"
+201,1,"Savings","5000"
+202,2,"Checking","2501"
+203,3,"Savings","3000"
+204,4,"Checking","10000"
+205,5,"Savings","1501"
