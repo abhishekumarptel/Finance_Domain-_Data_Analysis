@@ -1,0 +1,99 @@
+create table loans
+(Loan_ID int primary key,
+ Customer_ID int,
+ Loan_Amount bigint,
+ Loan_Type varchar(30),
+ Loan_Date date)
+
+ insert into loans
+ values
+ (301,	1,	20000,	'Personal',	'15-06-2022'),
+(302,	2,	15000,	'Auto',	'20-07-2022'),
+(303,	3,	10000,	'Education',	'10-01-2023'),
+(304,	4,	25000,	'Mortgage',	'01-12-2021'),
+(305,	5,	30000,	'Auto',	'25-10-2022')
+
+create table accounts
+(Account_ID int primary key,
+ Customer_ID int,
+ Account_Type varchar(30),
+ Balance bigint)
+  
+ insert into accounts
+ values
+ (201,	1,	'Savings',	5000),
+(202,	2,	'Checking',	2501),
+(203,	3,	'Savings',	3000),
+(204,	4,	'Checking',	10000),
+(205,	5,	'Savings',	1501)
+
+create table transactions
+(Transaction_ID int primary key,
+ Customer_ID	int,
+ Transaction_Date date,
+ Amount bigint)
+ 
+insert into transactions
+values
+(101,	1,	'15-01-2023',	201),
+(102,	2,	'20-01-2023',	341),
+(103,	3,	'05-02-2023',	150),
+(104,	4,	'10-03-2023',	500),
+(105,	5,	'15-03-2023',	620)
+
+create table customers
+(Customer_ID int,
+ Customer_Name varchar(30),
+ Country varchar(30),
+ Registration_Date date)
+ 
+insert into customers
+values
+(1,'John Doe',	'USA',	'10-01-2022'),
+(2,	'Jane Smith',	'UK',	'15-06-2021'),
+(3,	'Emily Davis',	'Canada',	'20-11-2020'),
+(4,	'Michael Brown',	'USA',	'05-03-2023'),
+(5,	'Sarah Johnson',	'Australia',	'01-12-2022')
+select * from loans
+select * from accounts
+select * from transactions
+select * from customers
+
+--1.Retrieve all columns from the Customers table.--
+select * from customers
+
+--2.Find all transactions made after 2023-01-31 from the Transactions table.--
+select * from transactions
+where transaction_date>'31-01-2023'
+
+--3.Write a query to join the Customers and Accounts tables and display CustomerName, AccountType, and Balance.--
+select customer_name,account_type,balance from customers
+join accounts
+on customers.customer_id=accounts.customer_id
+
+--4.Calculate the total transaction amount from the Transactions table.--
+select sum(amount) from transactions 
+
+--5.Group the accounts by AccountType and find the average balance for each account type.--
+select account_type,avg(balance) from accounts
+group by account_type
+
+--6.Identify account types where the average balance exceeds 4000.--
+select account_type,avg(balance) from accounts
+group by account_type
+having avg(balance)>4000
+
+--7.Retrieve the LoanID and LoanAmount from the Loans table and sort by LoanAmount in descending order.--
+select l.loan_id,l.loan_amount from loans l
+order by l.loan_amount desc
+
+--8.Add a row number for each transaction, ordered by TransactionDate in the Transactions table.--
+select *,(row_number() over( order by transaction_date )) from transactions
+
+--9.Rank customers based on their Balance in the Accounts table, highest balance first.-
+select * ,( rank() over( order by balance desc) )  from accounts
+
+--10.Calculate the running total of Amount in the Transactions table, ordered by TransactionDate.-
+select transaction_date, avg(amount) from transactions
+group by transaction_date
+order by transaction_date
